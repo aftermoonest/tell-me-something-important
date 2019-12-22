@@ -1,0 +1,6 @@
+Montserrat:
+
+regular - regular
+subtitle - semibold
+subtitle-additional - light
+title - bold
