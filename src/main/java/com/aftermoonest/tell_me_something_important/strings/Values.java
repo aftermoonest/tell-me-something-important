@@ -1,9 +1,15 @@
 package com.aftermoonest.tell_me_something_important.strings;
 
 public class Values {
-    public static String usernameLabel = "Ти можеш ввести своє ім'я тут";
+    public static String emailLabel = "Введи свій e-mail";
 
-    public static String usernameTip = "Або залишитись інкогніто";
+    public static String emailIncorrect = "Введено некоректний e-mail";
+
+    public static String emailError = "E-mail повинен бути заповнений";
+
+    public static String usernameLabel = "Введи своє ім'я";
+
+    public static String usernameTip = "Або залишись інкогніто";
 
     public static String somethingImportantLabel = "Розкажи мені щось важливе...";
 
@@ -11,7 +17,7 @@ public class Values {
 
     public static String close = "Закрити";
 
-    public static String errorNotification = "Текст має бути заповнений";
+    public static String textError = "Текст має бути заповнений";
 
     public static String about = "Про мене";
 

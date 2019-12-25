@@ -1,4 +1,4 @@
-package com.aftermoonest.tell_me_something_important.component;
+package com.aftermoonest.tell_me_something_important.components;
 
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;

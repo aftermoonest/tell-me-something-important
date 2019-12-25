@@ -1,6 +1,6 @@
 package com.aftermoonest.tell_me_something_important.view;
 
-import com.aftermoonest.tell_me_something_important.component.Item;
+import com.aftermoonest.tell_me_something_important.components.Item;
 import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.html.H6;
 import com.vaadin.flow.component.html.Label;

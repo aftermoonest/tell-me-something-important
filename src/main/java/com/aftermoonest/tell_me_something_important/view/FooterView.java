@@ -5,7 +5,7 @@ import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.html.Footer;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 
-@StyleSheet("frontend://styles/styles-footer-view.css")
+@StyleSheet("frontend://styles/styles-footer.css")
 class FooterView extends Footer {
 
     private HorizontalLayout layout = new HorizontalLayout();

@@ -3,14 +3,18 @@ package com.aftermoonest.tell_me_something_important;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import lombok.Data;
 import org.junit.Test;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.core.io.ClassPathResource;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.concurrent.CountDownLatch;
@@ -69,11 +73,33 @@ public class TestFirebase {
         }
     }
 
+    @Test
+    public void testdb2() {
+        User user = new User("Alex", LocalDate.now().toString(), "text1");
+        User user2 = new User("Alex1", LocalDate.now().toString(), "text2");
+        User user3 = new User("Alex2", LocalDate.now().toString(), "text3");
+        User user4 = new User("Alex3", LocalDate.now().toString(), "text4");
+
+        System.out.println(user);
+        System.out.println(user2);
+        System.out.println(user3);
+        System.out.println(user4);
+        //database.save(user, user.getId().toString());
+
+        WebDriver driver = new FirefoxDriver();
+
+        String session = ((RemoteWebDriver) driver).getSessionId().toString();
+        System.out.println(session);
+
+    }
+
     @Data
+    @Entity
+    static
     class User {
 
-        @GeneratedValue
-        Integer id;
+        @GeneratedValue(strategy = GenerationType.SEQUENCE)
+        int id;
         String name;
         String date;
         String text;
@@ -83,6 +109,8 @@ public class TestFirebase {
             this.date = date;
             this.text = text;
         }
+
+
     }
 
 }

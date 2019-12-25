@@ -1,7 +1,7 @@
 package com.aftermoonest.tell_me_something_important.view;
 
-import com.aftermoonest.tell_me_something_important.component.ClickIcon;
-import com.aftermoonest.tell_me_something_important.component.ClickLabel;
+import com.aftermoonest.tell_me_something_important.components.ClickIcon;
+import com.aftermoonest.tell_me_something_important.components.ClickLabel;
 import com.aftermoonest.tell_me_something_important.strings.Values;
 import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
