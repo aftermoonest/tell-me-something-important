@@ -5,15 +5,8 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
 public class ClickLabel extends VerticalLayout {
 
-    private final Label label;
-
     public ClickLabel(String value) {
-        setWidth("15%");
-        label = new Label(value);
-        add(label);
-    }
-
-    private void animation(){
-
+        setWidth("10%");
+        add(new Label(value));
     }
 }

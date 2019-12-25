@@ -1,7 +1,7 @@
 package com.aftermoonest.tell_me_something_important.component;
 
-import lombok.Data;
-import lombok.NonNull;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,17 +10,19 @@ import java.time.LocalDate;
 
 @Data
 @Entity
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@Builder()
 public class Item {
-    @Id
-    @GeneratedValue
-    private Long id;
-    private String name;
-    private LocalDate date;
-    private String text;
 
-    public Item(String name, LocalDate date, String text) {
+    Integer id;
+    String name;
+    LocalDate date;
+    String text;
+
+    /*public Item(String name, LocalDate date, String text) {
         this.name = name;
         this.date = date;
         this.text = text;
-    }
+
+    }*/
 }

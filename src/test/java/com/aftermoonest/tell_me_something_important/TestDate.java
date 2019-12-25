@@ -3,8 +3,6 @@ package com.aftermoonest.tell_me_something_important;
 import org.junit.Test;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class TestDate {
 

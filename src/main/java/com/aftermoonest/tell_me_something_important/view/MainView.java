@@ -1,5 +1,6 @@
 package com.aftermoonest.tell_me_something_important.view;
 
+import com.aftermoonest.tell_me_something_important.component.ClickIcon;
 import com.aftermoonest.tell_me_something_important.component.Item;
 import com.aftermoonest.tell_me_something_important.component.ItemList;
 import com.aftermoonest.tell_me_something_important.strings.Values;
@@ -66,6 +67,7 @@ public class MainView extends VerticalLayout {
         somethingImportantLayout.add(somethingImportantLabel, somethingImportantField);
 
         somethingImportantLayout.setAlignItems(Alignment.CENTER);
+
         add(somethingImportantLayout);
     }
 
@@ -116,7 +118,12 @@ public class MainView extends VerticalLayout {
         if (text == null || text.equals("")) {
             errorNotification.open();
         } else {
-            Item item = new Item(name.trim(), date, text.trim());
+            //Item item = new Item(name.trim(), date, text.trim());
+            Item item = Item.builder()
+                    .name(name.trim())
+                    .text(text.trim())
+                    .date(date)
+                    .build();
             items.add(item);
             setItems();
         }
