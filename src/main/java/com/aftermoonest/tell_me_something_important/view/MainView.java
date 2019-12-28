@@ -1,6 +1,6 @@
 package com.aftermoonest.tell_me_something_important.view;
 
-import com.aftermoonest.tell_me_something_important.components.Item;
+import com.aftermoonest.tell_me_something_important.repository.Item;
 import com.aftermoonest.tell_me_something_important.components.ItemList;
 import com.aftermoonest.tell_me_something_important.repository.Controller;
 import com.aftermoonest.tell_me_something_important.repository.ControllerImpl;
@@ -23,7 +23,7 @@ import com.vaadin.flow.server.PWA;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Route("")
@@ -32,7 +32,7 @@ import java.util.List;
 @PageTitle("TellMeSomethingImportant")
 public class MainView extends VerticalLayout {
 
-    Controller controller = new ControllerImpl();
+    private final Controller controller = new ControllerImpl();
 
     private final TextArea textField = new TextArea(null, Values.somethingImportantLabel);
     private final TextField usernameField = new TextField(Values.usernameLabel, Values.usernameTip);
@@ -44,14 +44,17 @@ public class MainView extends VerticalLayout {
 
     private final Notification errorTextNotification = new Notification(Values.textError, 5000);
     private final Notification errorEmailNotification = new Notification(Values.emailError, 5000);
+    private final Notification successAddingNotification = new Notification(Values.successAdding, 5000);
+
+    private final DialogView alreadyInDatabaseDialog = new DialogView(Values.alreadyInDatabase);
+
+    private VerticalLayout enteringInfoLayout = new VerticalLayout();
 
     private VerticalLayout itemsLayout = new VerticalLayout();
     private VerticalLayout additionalInfoLayout = new VerticalLayout();
     private HorizontalLayout additionalInfoBodyLayout = new HorizontalLayout();
 
     private VerticalLayout footerLayout = new VerticalLayout();
-
-    private List<Item> items = new ArrayList<>();
 
     @Autowired
     public MainView() {
@@ -65,6 +68,7 @@ public class MainView extends VerticalLayout {
         askText();
         setAdditionalInfoLayout();
         setSubmitButton();
+
         setItems();
         add(footerLayout);
         setKeyListener();
@@ -124,27 +128,17 @@ public class MainView extends VerticalLayout {
 
     private void setSubmitButton() {
         HorizontalLayout submitLayout = new HorizontalLayout();
-
         submitLayout.add(submitButton);
 
-        setSubmitButtonListener();
-
-        add(submitLayout);
-    }
-
-    private void setSubmitButtonListener() {
-        submitButton.addClickListener((ComponentEventListener<ClickEvent<Button>>) buttonClickEvent -> {
-            // TODO : hide button after adding item.
-            if (controller.isInDatabase(Integer.toString(emailField.getValue().hashCode()))) {
+        submitButton.addClickListener((ComponentEventListener<ClickEvent<Button>>) buttonClickEvent ->
+        {
+            if (controller.find(Integer.toString(emailField.getValue().hashCode()))) {
                 errorEmailNotification.open();
             }
-            addItem(
-                    usernameField.getValue(),
-                    emailField.getValue(),
-                    LocalDate.now(),
-                    textField.getValue()
-            );
+            addItemAndHideButton();
         });
+
+        add(submitLayout);
     }
 
     private void setKeyListener() {
@@ -157,30 +151,44 @@ public class MainView extends VerticalLayout {
         });
 
         usernameField.addKeyPressListener(Key.ENTER, e -> {
-            // TODO : hide button after adding item.
-            addItem(
-                    usernameField.getValue(),
-                    emailField.getValue(),
-                    LocalDate.now(),
-                    textField.getValue()
-            );
+            addItemAndHideButton();
         });
     }
 
+    private void addItemAndHideButton() {
+        addItem(
+                usernameField.getValue(),
+                emailField.getValue(),
+                LocalDate.now(),
+                textField.getValue()
+        );
+    }
+
     private void addItem(String name, String email, LocalDate date, String text) {
-        // TODO : add adding elements to database.
         if (!controller.isTextCorrect(text)) {
             errorTextNotification.open();
         } else if (!controller.isEmailCorrect(emailField)) {
             errorEmailNotification.open();
         } else {
+            checkIfInDatabaseAndSave(name, email, date, text);
+            clearFields();
+        }
+    }
 
+    private void checkIfInDatabaseAndSave(String name, String email, LocalDate date, String text) {
+        if (controller.find(email)) {
+            alreadyInDatabaseDialog.open();
+            clearFields();
+        } else {
             controller.save(controller.buildItem(email, name, date.toString(), text), email);
-
-            items.add(controller.buildItem(email, name, date.toString(), text));
-
             setItems();
         }
+    }
+
+    private void clearFields() {
+        textField.clear();
+        usernameField.clear();
+        emailField.clear();
     }
 
     private void setItems() {
@@ -188,6 +196,9 @@ public class MainView extends VerticalLayout {
         ItemList itemList = new ItemList();
 
         remove(itemsLayout);
+        List<Item> items = controller.get();
+        System.out.println(Arrays.toString(items.toArray()));
+
         itemsLayout = itemList.show(items);
         add(itemsLayout);
     }

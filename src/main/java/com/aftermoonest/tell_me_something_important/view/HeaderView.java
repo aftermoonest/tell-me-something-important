@@ -1,6 +1,5 @@
 package com.aftermoonest.tell_me_something_important.view;
 
-import com.aftermoonest.tell_me_something_important.components.ClickIcon;
 import com.aftermoonest.tell_me_something_important.components.ClickLabel;
 import com.aftermoonest.tell_me_something_important.strings.Values;
 import com.vaadin.flow.component.dependency.StyleSheet;
@@ -16,7 +15,6 @@ class HeaderView extends HorizontalLayout {
     private DialogView dialogAbout = new DialogView(Values.dialogAbout);
     private DialogView dialogManifest = new DialogView(Values.dialogManifest);
 
-    private ClickIcon github = new ClickIcon();
 
     @Autowired
     HeaderView() {
@@ -24,7 +22,7 @@ class HeaderView extends HorizontalLayout {
 
         setClassName("header-view");
 
-        add(about, manifest, github);
+        add(about, manifest);
 
         setClickListener();
     }

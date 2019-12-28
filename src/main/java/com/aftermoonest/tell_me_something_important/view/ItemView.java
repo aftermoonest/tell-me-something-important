@@ -1,6 +1,6 @@
 package com.aftermoonest.tell_me_something_important.view;
 
-import com.aftermoonest.tell_me_something_important.components.Item;
+import com.aftermoonest.tell_me_something_important.repository.Item;
 import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.html.H6;
 import com.vaadin.flow.component.html.Label;
@@ -26,7 +26,7 @@ public class ItemView extends VerticalLayout {
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);
 
         name = new H6(item.getName());
-        date = new H6(item.getDate().toString());
+        date = new H6(item.getDate());
 
         nameLayout = new HorizontalLayout();
         nameLayout.add(name, date);

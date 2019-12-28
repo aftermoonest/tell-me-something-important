@@ -1,12 +1,15 @@
 package com.aftermoonest.tell_me_something_important.repository;
 
-import com.aftermoonest.tell_me_something_important.components.Item;
 import com.vaadin.flow.component.textfield.EmailField;
+
+import java.util.List;
 
 public interface Controller {
     void save(Object item, String key);
 
-    boolean isInDatabase(String key);
+    List<Item> get();
+
+    boolean find(String key);
 
     boolean isTextCorrect(String value);
 

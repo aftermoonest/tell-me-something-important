@@ -1,66 +1,92 @@
 package com.aftermoonest.tell_me_something_important.repository;
 
-import com.google.firebase.database.*;
+import com.google.api.core.ApiFuture;
+import com.google.cloud.firestore.*;
+import com.google.firebase.cloud.FirestoreClient;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.concurrent.CountDownLatch;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.ExecutionException;
+import java.util.stream.Stream;
+
 
 @FieldDefaults(level = AccessLevel.PUBLIC)
 class Database {
 
-    private static FirebaseDatabase database;
-    private static DatabaseReference ref;
+    private static final Logger logger = LoggerFactory.getLogger(Database.class);
 
-    static void save(Object item, String key) {
-        database = FirebaseDatabase.getInstance();
-        ref = database.getReference().child(key);
+    private static Firestore database;
 
+    private static String collection = "users";
+
+    static void save(Object item, Integer id) {
+        String key = Integer.toString(id);
+
+        database = FirestoreClient.getFirestore();
+        logger.info("database initialized");
+
+        DocumentReference documentReference = database.collection(collection).document(key);
+        logger.info("document reference initialized: collection - " + collection);
+
+        ApiFuture<WriteResult> result = documentReference.set(item);
         try {
-            final CountDownLatch latch = new CountDownLatch(1);
-
-            //ref.setValue(value, new DatabaseReference.CompletionListener() {
-            ref.setValue(item, (databaseError, databaseReference) -> {
-                if (databaseError != null) {
-                    System.out.println("Data could not be saved " + databaseError.getMessage());
-                    latch.countDown();
-                } else {
-                    System.out.println("Data saved successfully.");
-                    latch.countDown();
-                }
-            });
-            latch.await();
+            logger.info("Update time : " + result.get().getUpdateTime());
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            logger.error("InterruptedException: " + e.getMessage());
+        } catch (ExecutionException e) {
+            logger.error("ExecutionException: " + e.getMessage());
         }
     }
 
-    private static boolean isInDatabase;
+    static List<Item> get() {
+        database = FirestoreClient.getFirestore();
 
-    static boolean findByKey(String key){
-        // TODO : заглушка
-        isInDatabase = false;
-        database = FirebaseDatabase.getInstance();
-        ref = database.getReference();
-        Query query = ref.equalTo(key);
-        query.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot post : dataSnapshot.getChildren()) {
-                    if (post.hasChild(key)) {
-                        isInDatabase = true;
-                    }
-                }
-                isInDatabase = false;
-            }
+        ApiFuture<QuerySnapshot> query = database.collection(collection).get();
+        QuerySnapshot querySnapshot = null;
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+        try {
+            querySnapshot = query.get();
+            logger.info("Update time : " + query.get().getReadTime());
+        } catch (InterruptedException e) {
+            logger.error("InterruptedException: " + e.getMessage());
+        } catch (ExecutionException e) {
+            logger.error("ExecutionException: " + e.getMessage());
+        }
 
-            }
-        });
-        return isInDatabase;
+        List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
+
+        Item item;
+        List<Item> items = new ArrayList<>();
+
+        for (QueryDocumentSnapshot document : documents) {
+            item = new Item();
+
+            item.setId(Integer.parseInt(document.getId()));
+            item.setDate(document.getString("date"));
+            item.setName(document.getString("name"));
+            item.setText(document.getString("text"));
+            logger.info(item.toString());
+
+            items.add(item);
+        }
+
+        System.out.println(Arrays.toString(items.toArray()));
+        return items;
     }
 
-
+    static boolean find(Integer key) {
+        List<Item> items = get();
+        for (Item item : items) {
+            if (item.getId().equals(key)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

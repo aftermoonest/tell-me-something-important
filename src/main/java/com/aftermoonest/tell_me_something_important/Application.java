@@ -19,6 +19,7 @@ public class Application extends SpringBootServletInitializer {
     private static final String URL = "https://testbd-6299b.firebaseio.com/";
     private static final String PATH = "/serviceAccount_test.json";
 
+
     public static void main(String[] args) {
         try {
             FirebaseOptions options = new FirebaseOptions.Builder()
@@ -34,5 +35,7 @@ public class Application extends SpringBootServletInitializer {
 
         SpringApplication.run(Application.class, args);
     }
+
+
 
 }

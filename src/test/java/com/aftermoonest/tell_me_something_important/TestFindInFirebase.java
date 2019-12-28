@@ -19,7 +19,7 @@ public class TestFindInFirebase {
 
 
     @Test
-    public void testFind(){
+    public void testFind() {
         try {
             FirebaseOptions options = new FirebaseOptions.Builder()
                     .setCredentials(GoogleCredentials
@@ -36,9 +36,8 @@ public class TestFindInFirebase {
         System.out.println("Key: " + key);
 
         database = FirebaseDatabase.getInstance();
-        ref = database.getReference(key);
+        ref = database.getReference().child("users/");
 
-        String value = ref.push().getKey();
-        System.out.println(value);
+
     }
 }
