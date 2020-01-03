@@ -1,0 +1,18 @@
+.header-view {
+    margin: 0;
+    padding-left: 12.5%;
+    width: 100vw;
+    background: #0b97c4;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.header-view label{
+    color: #d7dee1;
+    cursor: pointer;
+    transition-property: color;
+    transition-duration: 0.5s;
+    transition-timing-function: linear;
+}
+.header-view label:hover{
+    color: #ffffff;
+}

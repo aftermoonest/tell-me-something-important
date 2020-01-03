@@ -1,0 +1,20 @@
+.item-view{
+    border-radius: 10px;
+    margin-bottom: 2%;
+    background: #dbdfe4;
+}
+.item-view-shadow{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.item-view-name-text {
+    color: #2d3436;
+}
+
+.item-view-date-text {
+    color: #636e72;
+}
+
+.item-view-plain-text {
+    color: #2d3436;
+}
