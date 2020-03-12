@@ -2,7 +2,6 @@
 
 ## Using:
 1. Database - Firebase Cloud Firestore.
-Tried to use Realtime Database but they don`t have some libs for Java.
 2. Vaadin framework.
 3. Spring Boot.
 
